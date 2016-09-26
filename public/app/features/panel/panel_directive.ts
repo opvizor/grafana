@@ -19,6 +19,10 @@ var panelTemplate = `
       </span>
 
       <div class="panel-title-container drag-handle" panel-menu></div>
+      <span data-placement="top" bs-tooltip="ctrl.panel.help"  
+      ng-if="ctrl.panel.help" class="pointer" style="float: right; padding-right: 20px;">
+      <i class="fa fa-info-circle" ></i>
+      </span>
     </div>
 
     <div class="panel-content">
