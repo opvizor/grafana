@@ -45,7 +45,6 @@ func (this *WebhookNotifier) Notify(context *alerting.EvalContext) {
 	bodyJSON.Set("ruleId", context.Rule.Id)
 	bodyJSON.Set("ruleName", context.Rule.Name)
 	bodyJSON.Set("state", context.Rule.State)
-	bodyJSON.Set("severity", context.Rule.Severity)
 	bodyJSON.Set("evalMatches", context.EvalMatches)
 
 	ruleUrl, err := context.GetRuleUrl()
@@ -53,9 +52,8 @@ func (this *WebhookNotifier) Notify(context *alerting.EvalContext) {
 		bodyJSON.Set("rule_url", ruleUrl)
 	}
 
-	imageUrl, err := context.GetImageUrl()
-	if err == nil {
-		bodyJSON.Set("image_url", imageUrl)
+	if context.ImagePublicUrl != "" {
+		bodyJSON.Set("image_url", context.ImagePublicUrl)
 	}
 
 	body, _ := bodyJSON.MarshalJSON()

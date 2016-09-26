@@ -58,6 +58,7 @@ func Register(r *macaron.Macaron) {
 	r.Get("/plugins/:id/page/:page", reqSignedIn, Index)
 
 	r.Get("/dashboard/*", reqSignedIn, Index)
+	r.Get("/dashboard-solo/snapshot/*", Index)
 	r.Get("/dashboard-solo/*", reqSignedIn, Index)
 	r.Get("/import/dashboard", reqSignedIn, Index)
 	r.Get("/dashboards/*", reqSignedIn, Index)
@@ -202,9 +203,9 @@ func Register(r *macaron.Macaron) {
 
 		r.Get("/plugins", wrap(GetPluginList))
 		r.Get("/plugins/:pluginId/settings", wrap(GetPluginSettingById))
+		r.Get("/plugins/:pluginId/readme", wrap(GetPluginReadme))
 
 		r.Group("/plugins", func() {
-			r.Get("/:pluginId/readme", wrap(GetPluginReadme))
 			r.Get("/:pluginId/dashboards/", wrap(GetPluginDashboards))
 			r.Post("/:pluginId/settings", bind(m.UpdatePluginSettingCmd{}), wrap(UpdatePluginSetting))
 		}, reqOrgAdmin)
@@ -254,8 +255,6 @@ func Register(r *macaron.Macaron) {
 			r.Get("/", wrap(GetAlerts))
 		})
 
-		r.Get("/alert-history", wrap(GetAlertHistory))
-
 		r.Get("/alert-notifications", wrap(GetAlertNotifications))
 
 		r.Group("/alert-notifications", func() {
@@ -265,6 +264,8 @@ func Register(r *macaron.Macaron) {
 			r.Get("/:notificationId", wrap(GetAlertNotificationById))
 			r.Delete("/:notificationId", wrap(DeleteAlertNotification))
 		}, reqOrgAdmin)
+
+		r.Get("/annotations", wrap(GetAnnotations))
 
 		// error test
 		r.Get("/metrics/error", wrap(GenerateError))
